@@ -1,10 +1,15 @@
 package seedu.address.testutil;
 
-import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_GITHUB_USERNAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_NUS_ID;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ROLE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_SOC_USERNAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TUTORIAL_GROUP;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 
 import java.util.Set;
 
@@ -17,6 +22,12 @@ import seedu.address.model.tag.Tag;
  * A utility class for Person.
  */
 public class PersonUtil {
+
+    private static final String DEFAULT_NUS_ID = "A1234567B";
+    private static final String DEFAULT_ROLE = "student";
+    private static final String DEFAULT_SOC_USERNAME = "tester1";
+    private static final String DEFAULT_GITHUB_USERNAME = "tester1";
+    private static final String DEFAULT_TUTORIAL_GROUP = "T01";
 
     /**
      * Returns an add command string for adding the {@code person}.
@@ -31,9 +42,13 @@ public class PersonUtil {
     public static String getPersonDetails(Person person) {
         StringBuilder sb = new StringBuilder();
         sb.append(PREFIX_NAME + person.getName().fullName + " ");
-        sb.append(PREFIX_PHONE + person.getPhone().value + " ");
+        sb.append(PREFIX_NUS_ID + DEFAULT_NUS_ID + " ");
+        sb.append(PREFIX_ROLE + DEFAULT_ROLE + " ");
+        sb.append(PREFIX_SOC_USERNAME + DEFAULT_SOC_USERNAME + " ");
+        sb.append(PREFIX_GITHUB_USERNAME + DEFAULT_GITHUB_USERNAME + " ");
         sb.append(PREFIX_EMAIL + person.getEmail().value + " ");
-        sb.append(PREFIX_ADDRESS + person.getAddress().value + " ");
+        sb.append(PREFIX_PHONE + person.getPhone().value + " ");
+        sb.append(PREFIX_TUTORIAL_GROUP + DEFAULT_TUTORIAL_GROUP + " ");
         person.getTags().stream().forEach(
             s -> sb.append(PREFIX_TAG + s.tagName + " ")
         );

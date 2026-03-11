@@ -13,6 +13,8 @@ public class CliSyntax {
     public static final Prefix PREFIX_GITHUB_USERNAME = new Prefix("gh/");
     public static final Prefix PREFIX_EMAIL = new Prefix("e/");
     public static final Prefix PREFIX_PHONE = new Prefix("p/");
+    // TODO: Remove after all commands/tests are migrated away from address field.
+    public static final Prefix PREFIX_ADDRESS = new Prefix("a/");
     public static final Prefix PREFIX_TUTORIAL_GROUP = new Prefix("t/");
     public static final Prefix PREFIX_TAG = new Prefix("tag/");
 
