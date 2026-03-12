@@ -20,20 +20,32 @@ public class Person {
     private final Name name;
     private final Phone phone;
     private final Email email;
+    private final NusId nusId;
+    private final SocUsername socUsername;
+    private final GithubUsername githubUsername;
 
     // Data fields
     private final Address address;
+    private final Role role;
+    private final TutorialGroup tutorialGroup;
     private final Set<Tag> tags = new HashSet<>();
 
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
-        requireAllNonNull(name, phone, email, address, tags);
+    public Person(Name name, Phone phone, Email email, NusId nusId, SocUsername socUsername,
+            GithubUsername githubUsername, Address address, Role role,
+            TutorialGroup tutorialGroup, Set<Tag> tags) {
+        requireAllNonNull(name, phone, email, nusId, socUsername, githubUsername, address, role, tutorialGroup, tags);
         this.name = name;
         this.phone = phone;
         this.email = email;
+        this.nusId = nusId;
+        this.socUsername = socUsername;
+        this.githubUsername = githubUsername;
         this.address = address;
+        this.role = role;
+        this.tutorialGroup = tutorialGroup;
         this.tags.addAll(tags);
     }
 
@@ -49,8 +61,29 @@ public class Person {
         return email;
     }
 
+    public NusId getNusId() {
+        return nusId;
+    }
+
+    public SocUsername getSocUsername() {
+        return socUsername;
+    }
+
+    public GithubUsername getGithubUsername() {
+        return githubUsername;
+    }
+
     public Address getAddress() {
         return address;
+    }
+
+
+    public Role getRole() {
+        return role;
+    }
+
+    public TutorialGroup getTutorialGroup() {
+        return tutorialGroup;
     }
 
     /**
@@ -93,14 +126,19 @@ public class Person {
         return name.equals(otherPerson.name)
                 && phone.equals(otherPerson.phone)
                 && email.equals(otherPerson.email)
+                && nusId.equals(otherPerson.nusId)
+                && socUsername.equals(otherPerson.socUsername)
+                && githubUsername.equals(otherPerson.githubUsername)
                 && address.equals(otherPerson.address)
+                && role.equals(otherPerson.role)
+                && tutorialGroup.equals(otherPerson.tutorialGroup)
                 && tags.equals(otherPerson.tags);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, tags);
+        return Objects.hash(name, phone, email, nusId, socUsername, githubUsername, address, role, tutorialGroup, tags);
     }
 
     @Override
@@ -109,7 +147,12 @@ public class Person {
                 .add("name", name)
                 .add("phone", phone)
                 .add("email", email)
+                .add("nusId", nusId)
+                .add("socUsername", socUsername)
+                .add("githubUsername", githubUsername)
                 .add("address", address)
+                .add("role", role)
+                .add("tutorialGroup", tutorialGroup)
                 .add("tags", tags)
                 .toString();
     }

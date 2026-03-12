@@ -23,9 +23,14 @@ import cms.logic.commands.exceptions.CommandException;
 import cms.model.Model;
 import cms.model.person.Address;
 import cms.model.person.Email;
+import cms.model.person.GithubUsername;
 import cms.model.person.Name;
+import cms.model.person.NusId;
 import cms.model.person.Person;
 import cms.model.person.Phone;
+import cms.model.person.Role;
+import cms.model.person.SocUsername;
+import cms.model.person.TutorialGroup;
 import cms.model.tag.Tag;
 
 /**
@@ -56,7 +61,7 @@ public class EditCommand extends Command {
     private final EditPersonDescriptor editPersonDescriptor;
 
     /**
-     * @param index of the person in the filtered person list to edit
+     * @param index                of the person in the filtered person list to edit
      * @param editPersonDescriptor details to edit the person with
      */
     public EditCommand(Index index, EditPersonDescriptor editPersonDescriptor) {
@@ -98,10 +103,17 @@ public class EditCommand extends Command {
         Name updatedName = editPersonDescriptor.getName().orElse(personToEdit.getName());
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
+        NusId updatedNusId = personToEdit.getNusId();
+        SocUsername updatedSocUsername = personToEdit.getSocUsername();
+        GithubUsername updatedGithubUsername = personToEdit.getGithubUsername();
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
+        Role updatedRole = personToEdit.getRole();
+        TutorialGroup updatedTutorialGroup = personToEdit.getTutorialGroup();
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
-        return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress, updatedTags);
+        return new Person(updatedName, updatedPhone, updatedEmail, updatedNusId,
+                updatedSocUsername, updatedGithubUsername, updatedAddress,
+                updatedRole, updatedTutorialGroup, updatedTags);
     }
 
     @Override
@@ -139,7 +151,8 @@ public class EditCommand extends Command {
         private Address address;
         private Set<Tag> tags;
 
-        public EditPersonDescriptor() {}
+        public EditPersonDescriptor() {
+        }
 
         /**
          * Copy constructor.

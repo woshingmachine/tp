@@ -12,9 +12,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import cms.commons.exceptions.IllegalValueException;
 import cms.model.person.Address;
 import cms.model.person.Email;
+import cms.model.person.GithubUsername;
 import cms.model.person.Name;
+import cms.model.person.NusId;
 import cms.model.person.Person;
 import cms.model.person.Phone;
+import cms.model.person.Role;
+import cms.model.person.SocUsername;
+import cms.model.person.TutorialGroup;
 import cms.model.tag.Tag;
 
 /**
@@ -27,20 +32,37 @@ class JsonAdaptedPerson {
     private final String name;
     private final String phone;
     private final String email;
+    private final String nusId;
+    private final String socUsername;
+    private final String githubUsername;
     private final String address;
+    private final String role;
+    private final String tutorialGroup;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
      */
     @JsonCreator
-    public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
-            @JsonProperty("email") String email, @JsonProperty("address") String address,
-            @JsonProperty("tags") List<JsonAdaptedTag> tags) {
+    public JsonAdaptedPerson(@JsonProperty("name") String name,
+                             @JsonProperty("phone") String phone,
+                             @JsonProperty("email") String email,
+                             @JsonProperty("nusId") String nusId,
+                             @JsonProperty("socUsername") String socUsername,
+                             @JsonProperty("githubUsername") String githubUsername,
+                             @JsonProperty("address") String address,
+                             @JsonProperty("role") String role,
+                             @JsonProperty("tutorialGroup") String tutorialGroup,
+                             @JsonProperty("tags") List<JsonAdaptedTag> tags) {
         this.name = name;
         this.phone = phone;
         this.email = email;
+        this.nusId = nusId;
+        this.socUsername = socUsername;
+        this.githubUsername = githubUsername;
         this.address = address;
+        this.role = role;
+        this.tutorialGroup = tutorialGroup;
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -53,7 +75,12 @@ class JsonAdaptedPerson {
         name = source.getName().fullName;
         phone = source.getPhone().value;
         email = source.getEmail().value;
+        nusId = source.getNusId().value;
+        socUsername = source.getSocUsername().value;
+        githubUsername = source.getGithubUsername().value;
         address = source.getAddress().value;
+        role = source.getRole().value;
+        tutorialGroup = source.getTutorialGroup().value;
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -100,10 +127,56 @@ class JsonAdaptedPerson {
         if (!Address.isValidAddress(address)) {
             throw new IllegalValueException(Address.MESSAGE_CONSTRAINTS);
         }
+
+        if (nusId == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, NusId.class.getSimpleName()));
+        }
+        if (!NusId.isValidNusId(nusId)) {
+            throw new IllegalValueException(NusId.MESSAGE_CONSTRAINTS);
+        }
+        final NusId modelNusId = new NusId(nusId);
+
+        if (socUsername == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                    SocUsername.class.getSimpleName()));
+        }
+        if (!SocUsername.isValidSocUsername(socUsername)) {
+            throw new IllegalValueException(SocUsername.MESSAGE_CONSTRAINTS);
+        }
+        final SocUsername modelSocUsername = new SocUsername(socUsername);
+
+        if (githubUsername == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                    GithubUsername.class.getSimpleName()));
+        }
+        if (!GithubUsername.isValidGithubUsername(githubUsername)) {
+            throw new IllegalValueException(GithubUsername.MESSAGE_CONSTRAINTS);
+        }
+        final GithubUsername modelGithubUsername = new GithubUsername(githubUsername);
+
         final Address modelAddress = new Address(address);
 
+        if (role == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Role.class.getSimpleName()));
+        }
+        if (!Role.isValidRole(role)) {
+            throw new IllegalValueException(Role.MESSAGE_CONSTRAINTS);
+        }
+        final Role modelRole = Role.valueOf(role.toUpperCase());
+
+        if (tutorialGroup == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                    TutorialGroup.class.getSimpleName()));
+        }
+        if (!TutorialGroup.isValidTutorialGroup(tutorialGroup)) {
+            throw new IllegalValueException(TutorialGroup.MESSAGE_CONSTRAINTS);
+        }
+        final TutorialGroup modelTutorialGroup = new TutorialGroup(tutorialGroup);
+
         final Set<Tag> modelTags = new HashSet<>(personTags);
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelTags);
+        return new Person(modelName, modelPhone, modelEmail, modelNusId,
+                modelSocUsername, modelGithubUsername, modelAddress,
+                modelRole, modelTutorialGroup, modelTags);
     }
 
 }
